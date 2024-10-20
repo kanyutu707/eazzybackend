@@ -54,29 +54,68 @@ public class PostingService {
                 .qualifications(dto.getQualifications())
                 .postType(dto.getPostType())
                 .salary(dto.getSalary())
-                .user(user)
+                .postingStatus(dto.getPostingStatus())
+                .owner(user)
                 .build();
         Posting posting=repository.save(postings);
         return new ResponseEntity<>(posting, HttpStatus.CREATED);
     }
 
-    public ResponseEntity<Posting> update(int id, PostingDTO dto){
+    public ResponseEntity<Posting> update(int id, Posting dto){
         Optional<Posting> existingPost=repository.findById(id);
 
         if(existingPost.isPresent()){
-            Posting updatedPost=existingPost.get();
-            updatedPost.setPostingDate(dto.getPostingDate());
-            updatedPost.setDescription(dto.getDescription());
-            updatedPost.setQualifications(dto.getQualifications());
-            updatedPost.setPostType(dto.getPostType());
-            updatedPost.setRequirements(dto.getRequirements());
-            updatedPost.setClosingDate(dto.getClosingDate());
-            updatedPost.setSalary(dto.getSalary());
-            updatedPost.setTitle(dto.getTitle());
 
-            repository.save(updatedPost);
-            return new ResponseEntity<>(updatedPost, HttpStatus.OK);
+            boolean changed=false;
+            Posting updatedPost=existingPost.get();
+
+            if(dto.getPostingDate()!=null && !dto.getPostingDate().equals(updatedPost.getPostingDate())) {
+                updatedPost.setPostingDate(dto.getPostingDate());
+                changed=true;
+            }
+            if(dto.getDescription()!=null && !dto.getDescription().isEmpty() && !dto.getDescription().equals(updatedPost.getDescription())) {
+                updatedPost.setDescription(dto.getDescription());
+                changed=true;
+            }
+            if(dto.getQualifications()!=null && !dto.getQualifications().isEmpty() && !dto.getQualifications().equals(updatedPost.getQualifications())) {
+                updatedPost.setQualifications(dto.getQualifications());
+                changed=true;
+            }
+            if(dto.getPostType()!=null && !dto.getPostType().equals(updatedPost.getPostType())){
+            updatedPost.setPostType(dto.getPostType());
+            changed=true;
+            }
+            if(dto.getPostingStatus()!=null && !dto.getPostingStatus().equals(updatedPost.getPostingStatus())){
+                updatedPost.setPostingStatus(dto.getPostingStatus());
+                changed=true;
+            }
+            if(dto.getRequirements()!=null && !dto.getRequirements().isEmpty()&& !dto.getRequirements().equals(updatedPost.getRequirements())) {
+                updatedPost.setRequirements(dto.getRequirements());
+                changed=true;
+            }
+            if(dto.getClosingDate()!=null &&  !dto.getClosingDate().equals(updatedPost.getClosingDate())) {
+                updatedPost.setClosingDate(dto.getClosingDate());
+                changed=true;
+            }
+            if(dto.getSalary()!=updatedPost.getSalary() && dto.getSalary()!=0) {
+                updatedPost.setSalary(dto.getSalary());
+                changed=true;
+            }
+            if(dto.getTitle()!=null && !dto.getTitle().isEmpty()&& !dto.getTitle().equals(updatedPost.getTitle())) {
+                updatedPost.setTitle(dto.getTitle());
+                changed=true;
+            }
+            if(changed) {
+                repository.save(updatedPost);
+                System.out.println("Updated application: " + updatedPost);
+                return new ResponseEntity<>(updatedPost, HttpStatus.OK);
+            }
+            else {
+                System.out.println("No changes detected. Application not updated.");
+                return new ResponseEntity<>(updatedPost, HttpStatus.OK);
+            }
         }
+        System.out.println("Application not found for id: " + id);
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 

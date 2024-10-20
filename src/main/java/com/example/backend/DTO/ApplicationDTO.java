@@ -1,5 +1,9 @@
 package com.example.backend.DTO;
 
+import com.example.backend.Entities.ApplicationStatus;
+import com.example.backend.Entities.Posting;
+import com.example.backend.Entities.User;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,6 +27,17 @@ public class ApplicationDTO {
 
     private Integer posting_id;
 
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="applicant_id", referencedColumnName = "id")
+    private User applicant;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "posting_id", referencedColumnName = "id")
+    private Posting posting;
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "varchar(255) default 'ACTIVE'")
+    private ApplicationStatus applicationStatus;
 
     public Integer getApplicantId(){
         return applicant_id;

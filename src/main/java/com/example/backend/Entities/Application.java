@@ -19,13 +19,16 @@ public class Application {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="applicant_id", referencedColumnName = "id")
-    private User user;
+    private User applicant;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "posting_id", referencedColumnName = "id")
     private Posting posting;
 
     private String coverLetter;
+
+    @Enumerated(EnumType.STRING)
+    private ApplicationStatus applicationStatus;
 
     private String resume;
 

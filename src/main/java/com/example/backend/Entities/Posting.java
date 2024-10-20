@@ -27,11 +27,14 @@ public class Posting {
     private String qualifications;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "owner_id", referencedColumnName = "id")
-    private User user;
+    private User owner;
 
     @OneToMany(mappedBy = "posting")
     private Set<Application> applications=new HashSet<>();
 
+    @Enumerated(EnumType.STRING)
+
+    private ApplicationStatus postingStatus;
 
     private Date postingDate;
 

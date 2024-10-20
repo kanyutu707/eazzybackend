@@ -1,6 +1,7 @@
 package com.example.backend.DTO;
 
 import com.example.backend.Entities.Application;
+import com.example.backend.Entities.ApplicationStatus;
 import com.example.backend.Entities.PostType;
 import com.example.backend.Entities.User;
 import jakarta.persistence.*;
@@ -29,6 +30,8 @@ public class PostingDTO {
 
     private Integer owner_id;
 
+    @Enumerated(EnumType.STRING)
+    private ApplicationStatus postingStatus;
 
     private Date postingDate;
 

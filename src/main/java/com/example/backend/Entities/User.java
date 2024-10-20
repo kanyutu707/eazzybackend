@@ -28,10 +28,10 @@ public class User implements UserDetails {
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "owner")
     private Set<Posting> postings=new HashSet<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "applicant")
     private Set<Application> applications=new HashSet<>();
 
 

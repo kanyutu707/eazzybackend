@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "http://localhost:5173", maxAge = 3600, allowedHeaders = "*",allowCredentials = "true")
 @RestController
-@RequestMapping("/becot/authenticate")
+@RequestMapping("/authenticate")
 @RequiredArgsConstructor
 public class AuthenticationController {
     private final AuthenticationService service;
