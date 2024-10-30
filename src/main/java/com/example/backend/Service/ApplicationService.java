@@ -51,8 +51,9 @@ public class ApplicationService {
 
         var applications = Application.builder()
                 .applicationDate(dto.getApplicationDate())
-                .coverLetter(dto.getCoverLetter())
-                .resume(dto.getResume())
+                .coverLetterurl(dto.getCoverLetterurl())
+                .resumeurl(dto.getResumeurl())
+                .portfoliourl(dto.getPortfoliourl())
                 .applicant(user)
                 .posting(posting)
                 .applicationStatus(dto.getApplicationStatus())
@@ -77,16 +78,19 @@ public class ApplicationService {
                 changed = true;
             }
 
-            if (dto.getCoverLetter() != null && !dto.getCoverLetter().isEmpty() && !dto.getCoverLetter().equals(existingApplication.getCoverLetter())) {
-                existingApplication.setCoverLetter(dto.getCoverLetter());
+            if (dto.getCoverLetterurl() != null && !dto.getCoverLetterurl().isEmpty() && !dto.getCoverLetterurl().equals(existingApplication.getCoverLetterurl())) {
+                existingApplication.setCoverLetterurl(dto.getCoverLetterurl());
                 changed = true;
             }
 
-            if (dto.getResume() != null && !dto.getResume().isEmpty() && !dto.getResume().equals(existingApplication.getResume())) {
-                existingApplication.setResume(dto.getResume());
+            if (dto.getResumeurl() != null && !dto.getResumeurl().isEmpty() && !dto.getResumeurl().equals(existingApplication.getResumeurl())) {
+                existingApplication.setResumeurl(dto.getResumeurl());
                 changed = true;
             }
-
+            if (dto.getPortfoliourl()!=null && !dto.getPortfoliourl().isEmpty()&&!dto.getPortfoliourl().equals(existingApplication.getPortfoliourl())){
+                existingApplication.setPortfoliourl(dto.getPortfoliourl());
+                changed=true;
+            }
             if (dto.getApplicationStatus() != null && dto.getApplicationStatus() != existingApplication.getApplicationStatus()) {
                 existingApplication.setApplicationStatus(dto.getApplicationStatus());
                 changed = true;

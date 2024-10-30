@@ -17,11 +17,13 @@ import java.util.Date;
 @NoArgsConstructor
 public class ApplicationDTO {
 
-    private String coverLetter;
+    private String coverLetterurl;
 
-    private String resume;
+    private String resumeurl;
 
     private Date applicationDate;
+
+    private String portfoliourl;
 
     private Integer applicant_id;
 

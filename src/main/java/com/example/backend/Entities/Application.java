@@ -1,5 +1,6 @@
 package com.example.backend.Entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,12 +26,15 @@ public class Application {
     @JoinColumn(name = "posting_id", referencedColumnName = "id")
     private Posting posting;
 
-    private String coverLetter;
+    private String coverLetterurl;
 
     @Enumerated(EnumType.STRING)
     private ApplicationStatus applicationStatus;
 
-    private String resume;
+    private String resumeurl;
 
+    private String portfoliourl;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MMM-yyyy")
     private Date applicationDate;
 }
