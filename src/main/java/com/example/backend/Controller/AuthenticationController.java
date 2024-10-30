@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "https://eazzyfrontend.vercel.app/", maxAge = 3600, allowedHeaders = "*",allowCredentials = "true")
+
 @RestController
 @RequestMapping("/authenticate")
 @RequiredArgsConstructor
