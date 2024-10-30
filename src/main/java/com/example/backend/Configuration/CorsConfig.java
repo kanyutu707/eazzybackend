@@ -19,12 +19,13 @@ public class CorsConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .cors().configurationSource(corsConfigurationSource())
-                .and()
-                .csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/authenticate/**").permitAll()  // Allow authentication endpoints
-                .anyRequest().authenticated();
+                .securityMatcher("/**")
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/authenticate/**").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(csrf -> csrf.disable());
 
         return http.build();
     }
