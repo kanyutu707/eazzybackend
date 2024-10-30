@@ -2,55 +2,44 @@ package com.example.backend.Configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
 import java.util.Collections;
 
 @Configuration
+@EnableWebSecurity
 public class CorsConfig {
+
     @Bean
-    public CorsFilter corsFilter() {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .cors().configurationSource(corsConfigurationSource())
+                .and()
+                .csrf().disable()
+                .authorizeRequests()
+                .antMatchers("/authenticate/**").permitAll()  // Allow authentication endpoints
+                .anyRequest().authenticated();
+
+        return http.build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Collections.singletonList("https://eazzyfrontend.vercel.app"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept"));
+        configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-
-        // Allow credentials
-        config.setAllowCredentials(true);
-
-        // Allowed origins
-        config.setAllowedOriginPatterns(Collections.singletonList("https://eazzyfrontend.vercel.app"));
-
-        // Allowed headers
-        config.setAllowedHeaders(Arrays.asList(
-                "Origin",
-                "Content-Type",
-                "Accept",
-                "Authorization",
-                "Access-Control-Allow-Origin",
-                "Access-Control-Request-Method",
-                "Access-Control-Request-Headers",
-                "Access-Control-Allow-Credentials"
-        ));
-
-        // Allowed methods
-        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
-
-        // Exposed headers
-        config.setExposedHeaders(Arrays.asList(
-                "Origin",
-                "Content-Type",
-                "Accept",
-                "Authorization",
-                "Access-Control-Allow-Origin",
-                "Access-Control-Allow-Credentials"
-        ));
-
-        // Max age
-        config.setMaxAge(3600L);
-
-        source.registerCorsConfiguration("/**", config);
-        return new CorsFilter(source);
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }
